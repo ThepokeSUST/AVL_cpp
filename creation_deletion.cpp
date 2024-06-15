@@ -101,6 +101,40 @@ void inorder(node* root){
 
 }
 
+node* deletion(node* root,int ele){
+  if(root==NULL) return NULL;
+
+   if(root->data<ele) root->right=deletion(root->right,ele);
+   else if(root->data>ele) root->left=deletion(root->left,ele);
+
+   else{
+          if(!root->left){
+            node* temp=root->right;
+            delete(root);
+            return temp;
+          }
+          else if(!root->right){
+            node* temp=root->left;
+            delete(root);
+            return temp;
+          }
+          else{
+            node* child=root->right;
+
+            while(child->left!=NULL){
+               child=child->left;
+            }
+            root->data=child->data;
+
+            root->right=deletion(root->right,child->data);
+
+          }
+
+          
+   }
+
+   return root;
+}
 
 int main(){
   int n;
@@ -112,6 +146,12 @@ int main(){
    cin>>ele;
    root=insert_ele(root,ele);
   }
+
+  inorder(root);
+  cout<<endl;
+  int ele;
+  cin>>ele;
+  root=deletion(root,ele);
 
   inorder(root);
 }
